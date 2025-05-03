@@ -3,28 +3,44 @@ from sklearn.datasets import load_iris
 from sklearn.preprocessing import StandardScaler
 from sm_algo.kmeans import KMeans
 
-# Загрузка данных
+
+# Загрузка данных Iris (150 samples, 4 features)
 iris = load_iris()
-X = iris.data
+X = iris.data  # Данные в виде матрицы [150x4]
 
-# Масштабирование
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
+# Масштабирование данных (приведение к mean=0, std=1)
+#scaler = StandardScaler()
+#X_scaled = scaler.fit_transform(X)
 
-# Кластеризация
-kmeans = KMeans(n_clusters=3, random_state=42)
-kmeans.fit(X_scaled)  # 1. Вызываем fit()
-labels = kmeans.labels_  # 2. Получаем метки
+# Создание модели с 3 кластерами (по числу видов ирисов)
+kmeans = KMeans(n_clusters=3)
 
-# Визуализация (первые 2 признака)
-plt.scatter(X_scaled[:, 0], X_scaled[:, 1], c=labels, cmap='viridis')
+# Обучение модели на масштабированных данных
+kmeans.fit(X)
 
-# 3. Исправленный вызов get_centroids()
-centroids = kmeans.get_centroids()
-plt.scatter(centroids[:, 0], centroids[:, 1],
-           marker='X', s=200, c='red', edgecolor='black')
+# Получение меток кластеров для каждой точки
+labels = kmeans.labels_
 
-plt.xlabel('Feature 1 (scaled)')
-plt.ylabel('Feature 2 (scaled)')
+# Рисуем точки по первым двум признакам, раскрашивая по кластерам
+plt.scatter(
+    X[:, 0],  # Ось X: первый признак (длина чашелистика)
+    X[:, 1],  # Ось Y: второй признак (ширина чашелистика)
+    c=labels,        # Цвет точек = номер кластера
+    cmap='viridis'   # Палитра цветов
+)
+
+# Рисуем центроиды
+plt.scatter(
+    kmeans.centroids[:, 0],  # X координата центроидов
+    kmeans.centroids[:, 1],  # Y координата центроидов
+    marker='X',              # Форма — крестик
+    s=200,                   # Размер
+    c='red',                 # Цвет
+    edgecolor='black'        # Обводка
+)
+
+# Подписи осей и заголовок
+plt.xlabel('Sepal Width')
+plt.ylabel('Sepal Length')
 plt.title('K-means Clustering on Iris Dataset')
 plt.show()
