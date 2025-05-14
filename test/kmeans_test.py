@@ -1,16 +1,11 @@
-import matplotlib.pyplot as plt
 from sklearn.datasets import load_iris
-from sklearn.preprocessing import StandardScaler
 from sm_algo.kmeans import KMeans
+import matplotlib.pyplot as plt
 
 
 # Загрузка данных Iris (150 samples, 4 features)
 iris = load_iris()
 X = iris.data  # Данные в виде матрицы [150x4]
-
-# Масштабирование данных (приведение к mean=0, std=1)
-#scaler = StandardScaler()
-#X_scaled = scaler.fit_transform(X)
 
 # Создание модели с 3 кластерами (по числу видов ирисов)
 kmeans = KMeans(n_clusters=3)

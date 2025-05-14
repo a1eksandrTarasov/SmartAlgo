@@ -1,12 +1,12 @@
+from sm_algo.logisticreg import LogisticRegressionRidge
 from sklearn.metrics import accuracy_score
 from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import numpy as np
-from sm_algo.isticreg import LogisticRegressionRidge
 
 
-def score(self, X, y, threshold=0.5):
+def score(model, X, y, threshold=0.5):
     """
     Вычисляет точность (accuracy) модели.
 
@@ -24,20 +24,20 @@ def score(self, X, y, threshold=0.5):
     float
         Точность модели (accuracy).
     """
-    y_pred = self.predict(X, threshold)
+    y_pred = model.predict(X, threshold)
     return accuracy_score(y, y_pred)
 
 
-def plot_loss_history(self):
+def plot_loss_history(loss_history):
     """Визуализирует историю потерь во время обучения."""
-    plt.plot(self.loss_history)
+    plt.plot(loss_history)
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.title('Training Loss')
     plt.show()
 
 
-def plot_decision_boundary(self, X, y):
+def plot_decision_boundary(model, X, y):
     """
     Визуализирует разделяющую границу (работает только для 2D-данных).
 
@@ -57,7 +57,7 @@ def plot_decision_boundary(self, X, y):
     xx, yy = np.meshgrid(np.linspace(x_min, x_max, 100), np.linspace(y_min, y_max, 100))
 
     # Предсказание для сетки
-    Z = self.predict(np.c_[xx.ravel(), yy.ravel()])
+    Z = model.predict(np.c_[xx.ravel(), yy.ravel()])
     Z = Z.reshape(xx.shape)
 
     # Визуализация
@@ -79,20 +79,17 @@ X, y = make_classification(
 # Разделение на train/test
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Нормализация
-
 # Создание и обучение модели
 model = LogisticRegressionRidge(learning_rate=0.001, lambda_=0.1, verbose=True, epochs=1000)
 model.fit(X_train, y_train)
 
-print("Веса модели:", model.get_weights())
-
 # Оценка модели
-train_accuracy = model.score(X_train, y_train)
-test_accuracy = model.score(X_test, y_test)
+print("Веса модели:", model.get_weights())
+train_accuracy = score(model, X_train, y_train)
+test_accuracy = score(model, X_test, y_test)
 print(f"Train Accuracy: {train_accuracy:.4f}")
 print(f"Test Accuracy: {test_accuracy:.4f}")
 
 # Визуализация
-model.plot_loss_history()
-model.plot_decision_boundary(X_test, y_test)
+plot_loss_history(model.loss_history)
+plot_decision_boundary(model, X_test, y_test)
