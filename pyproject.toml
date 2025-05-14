@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sm_algo"
-version = "0.1.0"
+version = "0.1.1"
 authors = [
     {name = "Aleksandr", email = "Aleksandr7839@yandex.ru"},
 ]
@@ -17,6 +17,7 @@ classifiers = [
 ]
 dependencies = [
     "numpy>=2.2.5",
+    "scipy>=1.15.3"
 ]
 
 [project.urls]
