@@ -23,3 +23,6 @@ dependencies = [
 [project.urls]
 "Homepage" = "https://github.com/a1eksandrTarasov/SmartAlgo.git"
 "Bug Tracker" = "https://github.com/a1eksandrTarasov/SmartAlgo.git/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
